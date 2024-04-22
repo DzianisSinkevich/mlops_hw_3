@@ -5,8 +5,6 @@ import warnings
 warnings.filterwarnings('ignore')
 pd.options.mode.chained_assignment = None
 
-print("<<< Start data preprocessing >>>")
-
 
 def read_file(file_path):
     try:
@@ -49,9 +47,10 @@ def df_prerpocessing(file_path):
     print("<< Finish preprocessing '" + file_path + "' >>\n")
 
 
-train_path = "train/df_train_0.csv"
-df_prerpocessing(train_path)
-test_path = "test/df_test_0.csv"
-df_prerpocessing(test_path)
-
-print("<<< Finish data preprocessing >>>\n")
+def dp_main():
+    print("<<< Start data preprocessing >>>")
+    train_path = "train/df_train_0.csv"
+    df_prerpocessing(train_path)
+    test_path = "test/df_test_0.csv"
+    df_prerpocessing(test_path)
+    print("<<< Finish data preprocessing >>>\n")

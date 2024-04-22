@@ -6,8 +6,6 @@ import numpy as np
 
 warnings.filterwarnings('ignore')
 
-print("<<< Start data creation >>>")
-
 
 def delete_files(dir_path):
     try:
@@ -41,7 +39,9 @@ def get_dfs():
     return df1, df2
 
 
-def main():
+def dc_main():
+    print("<<< Start data creation >>>")
+
     dir_path = 'test'
     if os.path.isdir(dir_path):
         delete_files(dir_path)
@@ -53,6 +53,4 @@ def main():
     save_file(df_train, 'train', 'df_train_0.csv')
     save_file(df_test, 'test', 'df_test_0.csv')
 
-
-main()
-print("<<< Finish data creation >>>\n")
+    print("<<< Finish data creation >>>\n")

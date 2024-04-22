@@ -8,12 +8,11 @@ from sklearn.base import BaseEstimator, TransformerMixin  # для создан�
 import numpy as np  # библиотека Numpy для операций линейной алгебры и прочего
 import warnings
 import pickle
+import os
 
 import pandas as pd  # Библиотека Pandas для работы с табличными данными
 
 warnings.filterwarnings('ignore')
-
-print("<<< Start model testing >>>")
 
 
 def read_file(file_path):
@@ -23,6 +22,37 @@ def read_file(file_path):
         return df
     except IOError:
         print("Error uccured while readed file '" + file_path + "'.")
+
+
+def remove_old_results():
+    try:
+        files = os.listdir('results')
+        for file in files:
+            file_path = os.path.join('results', file)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+        print("All files from '/results' deleted successfully.")
+    except OSError:
+        print("Error occurred while deleting '/results/results'.")
+
+
+def create_results():
+    try:
+        print("Start creating of file '/results/results'.")
+        open("results/results", "a")
+        print("/results/results created successfully.")
+    except OSError:
+        print("Error occurred while creating '/results/results'.")
+
+
+def save_results(data):
+    try:
+        if not os.path.isdir('results'):
+            os.mkdir('results')
+        with open("results/results", "a") as text_file:
+            text_file.write(data)
+    except IOError:
+        print("Error uccured while save data in /results/results")
 
 
 def load_pipeline():
@@ -69,11 +99,11 @@ def main(test_df_path):
     x_test, y_test = df.drop(['cut'], axis=1), df['cut']
     pipeline = load_pipeline()
 
-    print("\nModel's f1: ")
-    print(f"f1 on test data: {calculate_metric(pipeline, x_test, y_test):.4f}")
+    save_results("\nModel's f1: \n")
+    save_results(f"f1 on test data: {calculate_metric(pipeline, x_test, y_test):.4f}\n")
 
-    print("\nModel's scores: ")
-    print(classification_report(y_test, pipeline.predict(x_test), target_names={'low', 'hight'}))
+    save_results("\nModel's scores: \n")
+    save_results(classification_report(y_test, pipeline.predict(x_test), target_names={'low', 'hight'}))
 
     scoring_clf = {'ACC': 'accuracy',
                    'F1': 'f1',
@@ -132,5 +162,9 @@ class RareGrouper(BaseEstimator, TransformerMixin):
         return X_copy
 
 
-main('test/df_test_0.csv')
-print("<<< Finish model testing >>>")
+def mt_main():
+    print("<<< Start model testing >>>")
+    remove_old_results()
+    create_results()
+    main('test/df_test_0.csv')
+    print("<<< Finish model testing >>>")

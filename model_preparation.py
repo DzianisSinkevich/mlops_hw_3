@@ -19,8 +19,6 @@ import pandas as pd  # Библиотека Pandas для работы с таб
 
 warnings.filterwarnings('ignore')
 
-print("<<< Start preparation >>>")
-
 
 def read_file(file_path):
     try:
@@ -130,6 +128,7 @@ class RareGrouper(BaseEstimator, TransformerMixin):
         return X_copy
 
 
-preparation('train/df_train_0.csv')
-
-print("<<< Finish preparation >>>\n")
+def mp_main():
+    print("<<< Start preparation >>>")
+    preparation('train/df_train_0.csv')
+    print("<<< Finish preparation >>>\n")
